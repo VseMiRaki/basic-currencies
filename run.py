@@ -8,14 +8,13 @@ logging.getLogger().setLevel(logging.INFO)
 
 GRAPHITE_HOST = 'graphite'
 CURRENCIES = ['CAD', 'CHF', 'USD']
-SENDER = graphyte.Sender(GRAPHITE_HOST, prefix='currencies')
 BASE_URL='https://api.exchangeratesapi.io/latest'
+SENDER = graphyte.Sender(GRAPHITE_HOST, prefix='currencies')
 
 def main():
-    request = BASE_URL
-    logging.info("Request: %s", request)
-    response = json.loads(urllib.request.urlopen(request).read().decode('utf-8'))
-    logging.info('Accepted response: %s', response)
+    logging.info("Request: %s", BASE_URL)
+    response = json.loads(urllib.request.urlopen(BASE_URL).read().decode('utf-8'))
+    logging.info('Response: %s', response)
     for currency in CURRENCIES:
         SENDER.send(currency, response['rates'][currency])
 
